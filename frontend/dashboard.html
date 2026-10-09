@@ -1,0 +1,887 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSwap Dashboard</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5fb;color:#25233a}
+header{background:linear-gradient(120deg,#6554d9,#8e55c7);color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:26px}
+button{border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:bold;background:#6b55d9;color:white}
+button:hover{opacity:.88}
+button:disabled{opacity:.5;cursor:not-allowed}
+.logout{background:white;color:#6249c9}
+main{max-width:1150px;margin:24px auto;padding:0 16px}
+.panel,.stat,.card{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 14px #25233a0d;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:20px 0}
+.stat h3{margin:0;color:#716d83;font-size:14px}
+.stat p{font-size:27px;font-weight:bold;margin:10px 0 0;color:#634bd0}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+nav button{background:#e8e4fb;color:#4e3c9c}
+nav button.active{background:#6652d5;color:white}
+.tab{display:none}
+.tab.active{display:block}
+form{display:grid;gap:12px;max-width:650px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d9d6e5;border-radius:8px;font:inherit}
+textarea{min-height:75px;resize:vertical}
+label{font-weight:bold;font-size:14px}
+.field{display:grid;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card h3{margin-top:0;color:#5944bf}
+.muted{color:#77738a;font-size:14px}
+.message{margin:12px 0;padding:10px;border-radius:8px;background:#f0edff;color:#4e3c9c;overflow-wrap:anywhere}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.secondary{background:#e8e4fb;color:#4e3c9c}
+.danger{background:#c53f57}
+.success{background:#25845d}
+hr{border:0;border-top:1px solid #eee;margin:18px 0}
+h2{margin-top:0}
+.wallet-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wallet-title h2{margin:0}
+.wallet-note{font-size:14px;color:#77738a;line-height:1.6}
+.credit-number{overflow-wrap:anywhere}
+.transaction{padding:12px;border:1px solid #eee;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.transaction h4{margin:0 0 5px}
+.transaction p{margin:4px 0;font-size:13px;color:#77738a}
+.earned{color:#25845d;font-weight:bold}
+.spent{color:#c53f57;font-weight:bold}
+.status-completed{color:#25845d}
+@media(max-width:500px){
+ header h1{font-size:21px}
+ .panel{padding:15px}
+ .transaction{align-items:flex-start}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div>
+    <h1>SkillSwap</h1>
+    <div>Student Skill Exchange Platform</div>
+  </div>
+  <button class="logout" onclick="logout()">Logout</button>
+</header>
+
+<main>
+  <section class="panel">
+    <h2 id="welcome">Welcome!</h2>
+    <p class="muted">Share what you know. Learn something new.</p>
+    <div id="topMessage" class="message">Loading your dashboard...</div>
+  </section>
+
+  <!-- DASHBOARD STATISTICS -->
+  <section class="stats">
+    <div class="stat"><h3>Skill Credits</h3><p id="credits">0</p></div>
+    <div class="stat"><h3>My Skills</h3><p id="skillCount">0</p></div>
+    <div class="stat"><h3>Requests</h3><p id="requestCount">0</p></div>
+    <div class="stat"><h3>Sessions</h3><p id="sessionCount">0</p></div>
+    <div class="stat"><h3>Average Rating</h3><p id="rating">0.0</p></div>
+  </section>
+
+  <!-- NEW: CREDIT WALLET -->
+  <section class="panel" id="creditWallet">
+    <div class="wallet-title">
+      <h2>💜 My Credit Wallet</h2>
+      <button class="secondary" onclick="loadCredits()">Refresh Wallet</button>
+    </div>
+
+    <p class="wallet-note">
+      Learn a skill and spend 10 credits per completed session.
+      Teach another student and earn 10 credits per completed session.
+    </p>
+
+    <section class="stats">
+      <div class="stat">
+        <h3>Available Balance</h3>
+        <p class="credit-number" id="walletBalance">--</p>
+      </div>
+      <div class="stat">
+        <h3>Total Earned</h3>
+        <p class="credit-number" id="creditsEarned">--</p>
+      </div>
+      <div class="stat">
+        <h3>Total Spent</h3>
+        <p class="credit-number" id="creditsSpent">--</p>
+      </div>
+    </section>
+
+    <div id="walletMessage" class="message" hidden></div>
+
+    <hr>
+    <h3>Credit Transaction History</h3>
+    <div id="creditHistory">
+      <p class="muted">Loading transaction history...</p>
+    </div>
+  </section>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <button class="active" onclick="openTab('profileTab',this)">Profile</button>
+    <button onclick="openTab('skillsTab',this)">My Skills</button>
+    <button onclick="openTab('teachersTab',this)">Find Teachers</button>
+    <button onclick="openTab('requestsTab',this)">Requests</button>
+    <button onclick="openTab('sessionsTab',this)">Sessions</button>
+    <button onclick="openTab('reviewsTab',this)">Reviews</button>
+  </nav>
+
+  <!-- PROFILE -->
+  <section id="profileTab" class="tab active panel">
+    <h2>My Profile</h2>
+
+    <form id="profileForm">
+      <div class="field">
+        <label for="name">Full name</label>
+        <input id="name" required>
+      </div>
+
+      <div class="field">
+        <label for="department">Department</label>
+        <input id="department" placeholder="e.g. Information Technology">
+      </div>
+
+      <div class="field">
+        <label for="year">Year</label>
+        <select id="year">
+          <option value="">Select year</option>
+          <option value="1">1st Year</option>
+          <option value="2">2nd Year</option>
+          <option value="3">3rd Year</option>
+          <option value="4">4th Year</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="bio">About me</label>
+        <textarea id="bio" placeholder="Tell other students about yourself"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="teachText">Skills I can teach</label>
+        <input id="teachText" placeholder="Python, HTML, SQL">
+      </div>
+
+      <div class="field">
+        <label for="learnText">Skills I want to learn</label>
+        <input id="learnText" placeholder="Java, UI Design">
+      </div>
+
+      <button type="submit">Save Profile</button>
+    </form>
+
+    <div id="profileMessage" class="message" hidden></div>
+  </section>
+
+  <!-- MY SKILLS -->
+  <section id="skillsTab" class="tab panel">
+    <h2>My Skills</h2>
+    <p class="muted">Add a skill you can teach or want to learn.</p>
+
+    <form id="skillForm">
+      <div class="field">
+        <label for="skillName">Skill name</label>
+        <input id="skillName" required placeholder="e.g. Python">
+      </div>
+
+      <div class="field">
+        <label for="skillType">Skill type</label>
+        <select id="skillType">
+          <option value="teach">I can teach</option>
+          <option value="learn">I want to learn</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="skillLevel">Level</label>
+        <select id="skillLevel">
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+
+      <button type="submit">Add Skill</button>
+    </form>
+
+    <div id="skillMessage" class="message" hidden></div>
+    <hr>
+    <h3>Added Skills</h3>
+    <div id="mySkills" class="grid"></div>
+  </section>
+
+  <!-- FIND TEACHERS -->
+  <section id="teachersTab" class="tab panel">
+    <h2>Find Teachers</h2>
+    <p class="muted">Browse students who offer skills to teach.</p>
+    <button onclick="loadTeachers()">Refresh Teachers</button>
+    <div id="teacherMessage" class="message" hidden></div>
+    <div id="teachers" class="grid" style="margin-top:16px"></div>
+  </section>
+
+  <!-- REQUESTS -->
+  <section id="requestsTab" class="tab panel">
+    <h2>Learning Requests</h2>
+    <p class="muted">View requests you sent and requests you received.</p>
+    <button onclick="loadRequests()">Refresh Requests</button>
+    <div id="requestMessage" class="message" hidden></div>
+    <div id="requests" class="grid" style="margin-top:16px"></div>
+  </section>
+
+  <!-- SESSIONS -->
+  <section id="sessionsTab" class="tab panel">
+    <h2>Learning Sessions</h2>
+    <p class="muted">
+      Each completed one-hour session transfers 10 credits:
+      the learner spends 10 and the teacher earns 10.
+    </p>
+    <button onclick="loadSessions()">Refresh Sessions</button>
+    <div id="sessionMessage" class="message" hidden></div>
+    <div id="sessions" class="grid" style="margin-top:16px"></div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviewsTab" class="tab panel">
+    <h2>Reviews</h2>
+
+    <form id="reviewForm">
+      <div class="field">
+        <label for="reviewedId">Student ID to review</label>
+        <input id="reviewedId" type="number" min="1" required>
+      </div>
+
+      <div class="field">
+        <label for="reviewSession">Session ID (optional)</label>
+        <input id="reviewSession" type="number" min="1">
+      </div>
+
+      <div class="field">
+        <label for="reviewRating">Rating</label>
+        <select id="reviewRating">
+          <option value="5">5 - Excellent</option>
+          <option value="4">4 - Very good</option>
+          <option value="3">3 - Good</option>
+          <option value="2">2 - Fair</option>
+          <option value="1">1 - Poor</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="reviewComment">Comment</label>
+        <textarea id="reviewComment" placeholder="Share your feedback"></textarea>
+      </div>
+
+      <button type="submit">Submit Review</button>
+    </form>
+
+    <div id="reviewMessage" class="message" hidden></div>
+    <hr>
+    <h3>Reviews About Me</h3>
+    <button onclick="loadReviews()">Refresh Reviews</button>
+    <div id="reviews" class="grid" style="margin-top:16px"></div>
+  </section>
+</main>
+
+<script>
+const API_URL = "http://127.0.0.1:5000";
+let student = null;
+
+try {
+  student = JSON.parse(localStorage.getItem("student") || "null");
+} catch (e) {
+  student = null;
+}
+
+if (!student || !(student.student_id || student.id)) {
+  alert("Please login first.");
+  window.location.href = "index.html";
+}
+
+const studentId = Number(student?.student_id || student?.id);
+
+function openTab(id, button) {
+  document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(el => el.classList.remove("active"));
+
+  document.getElementById(id).classList.add("active");
+  if (button) button.classList.add("active");
+
+  if (id === "skillsTab") loadSkills();
+  if (id === "teachersTab") loadTeachers();
+  if (id === "requestsTab") loadRequests();
+  if (id === "sessionsTab") loadSessions();
+  if (id === "reviewsTab") loadReviews();
+}
+
+function showMessage(id, message) {
+  const el = document.getElementById(id);
+  el.hidden = false;
+  el.textContent = message;
+}
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+async function api(path, options = {}) {
+  const response = await fetch(API_URL + path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    }
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Request failed");
+  }
+
+  return data;
+}
+
+function logout() {
+  localStorage.removeItem("student");
+  window.location.href = "index.html";
+}
+
+function fillProfile(user) {
+  document.getElementById("name").value = user.name || "";
+  document.getElementById("department").value = user.department || "";
+  document.getElementById("year").value =
+    user.year == null ? "" : String(user.year);
+  document.getElementById("bio").value = user.bio || "";
+  document.getElementById("teachText").value = user.skills_to_teach || "";
+  document.getElementById("learnText").value = user.skills_to_learn || "";
+
+  document.getElementById("welcome").textContent =
+    "Welcome, " + (user.name || "Student") + "!";
+
+  if (user.skill_credits != null) {
+    document.getElementById("credits").textContent = user.skill_credits;
+  }
+
+  student = {
+    ...student,
+    student_id: Number(user.id || user.student_id || studentId),
+    name: user.name || student.name,
+    email: user.email || student.email,
+    department: user.department,
+    year: user.year,
+    credit_balance: user.skill_credits ?? student.credit_balance ?? 0
+  };
+
+  localStorage.setItem("student", JSON.stringify(student));
+}
+
+async function loadDashboard() {
+  try {
+    const data = await api(`/api/dashboard/${studentId}`);
+
+    if (data.student) fillProfile(data.student);
+
+    const stats = data.stats || {};
+    document.getElementById("skillCount").textContent = stats.total_skills ?? 0;
+    document.getElementById("requestCount").textContent = stats.total_requests ?? 0;
+    document.getElementById("sessionCount").textContent = stats.total_sessions ?? 0;
+    document.getElementById("rating").textContent =
+      Number(stats.average_rating || 0).toFixed(1);
+
+    showMessage("topMessage", "Dashboard loaded successfully.");
+  } catch (error) {
+    showMessage("topMessage", "Dashboard: " + error.message);
+
+    try {
+      const data = await api(`/api/profile/${studentId}`);
+      fillProfile(data.user || data.student || data);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+/* NEW: LOAD CREDIT WALLET */
+async function loadCredits() {
+  const historyContainer = document.getElementById("creditHistory");
+  historyContainer.innerHTML = "<p>Loading transaction history...</p>";
+
+  try {
+    const data = await api(`/api/credits/${studentId}`);
+
+    const balance = Number(data.balance ?? data.skill_credits ?? 0);
+    const earned = Number(data.earned ?? 0);
+    const spent = Number(data.spent ?? 0);
+
+    document.getElementById("credits").textContent = balance;
+    document.getElementById("walletBalance").textContent = balance;
+    document.getElementById("creditsEarned").textContent = earned;
+    document.getElementById("creditsSpent").textContent = spent;
+
+    student = {
+      ...student,
+      credit_balance: balance
+    };
+    localStorage.setItem("student", JSON.stringify(student));
+
+    const history = data.history || data.transactions || [];
+
+    if (!history.length) {
+      historyContainer.innerHTML =
+        "<p class='muted'>No credit transactions yet. Complete a learning session to see your history.</p>";
+    } else {
+      historyContainer.innerHTML = history.map(item => {
+        const type = String(item.transaction_type || item.type || "").toUpperCase();
+        const isEarn = type === "EARN";
+        const amount = Number(item.credits || 0);
+        const description = item.description ||
+          (isEarn ? "Credits earned" : "Credits spent");
+
+        return `
+          <article class="transaction">
+            <div>
+              <h4>${safe(description)}</h4>
+              <p>${safe(item.created_at || "Date unavailable")}</p>
+              <p>Transaction: ${safe(type || "CREDIT")}</p>
+            </div>
+            <div class="${isEarn ? "earned" : "spent"}">
+              ${isEarn ? "+" : "-"}${amount} credits
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("walletMessage").hidden = true;
+  } catch (error) {
+    historyContainer.innerHTML =
+      "<p>Could not load credit history. Check whether the backend credit API is available.</p>";
+
+    showMessage("walletMessage", "Wallet error: " + error.message);
+  }
+}
+
+/* PROFILE UPDATE */
+document.getElementById("profileForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const payload = {
+    name: document.getElementById("name").value.trim(),
+    department: document.getElementById("department").value.trim(),
+    year: document.getElementById("year").value || null,
+    bio: document.getElementById("bio").value.trim(),
+    skills_to_teach: document.getElementById("teachText").value.trim(),
+    skills_to_learn: document.getElementById("learnText").value.trim()
+  };
+
+  try {
+    await api(`/api/profile/${studentId}`, {
+      method: "PUT",
+      body: JSON.stringify(payload)
+    });
+
+    student = {...student, ...payload};
+    localStorage.setItem("student", JSON.stringify(student));
+
+    showMessage("profileMessage", "Profile updated successfully!");
+    await loadDashboard();
+  } catch (error) {
+    showMessage("profileMessage", "Could not update profile: " + error.message);
+  }
+});
+
+/* ADD SKILL */
+document.getElementById("skillForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const payload = {
+    student_id: studentId,
+    skill_name: document.getElementById("skillName").value.trim(),
+    skill_type: document.getElementById("skillType").value,
+    level: document.getElementById("skillLevel").value
+  };
+
+  try {
+    await api("/api/skills", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+
+    document.getElementById("skillName").value = "";
+    showMessage("skillMessage", "Skill added successfully!");
+
+    await loadSkills();
+    await loadDashboard();
+  } catch (error) {
+    showMessage("skillMessage", "Could not add skill: " + error.message);
+  }
+});
+
+/* LOAD SKILLS */
+async function loadSkills() {
+  const container = document.getElementById("mySkills");
+  container.innerHTML = "<p>Loading skills...</p>";
+
+  try {
+    const data = await api(`/api/skills/${studentId}`);
+    const skills = data.skills || [];
+
+    document.getElementById("skillCount").textContent = skills.length;
+
+    if (!skills.length) {
+      container.innerHTML =
+        "<p>No skills added yet. Add your first skill above.</p>";
+      return;
+    }
+
+    container.innerHTML = skills.map(skill => `
+      <article class="card">
+        <h3>${safe(skill.skill_name)}</h3>
+        <p>Type: ${safe(skill.skill_type)}</p>
+        <p>Level: ${safe(skill.level || "Not specified")}</p>
+        <button class="danger" onclick="deleteSkill(${Number(skill.id)})">
+          Delete
+        </button>
+      </article>
+    `).join("");
+  } catch (error) {
+    container.innerHTML =
+      `<p>Could not load skills: ${safe(error.message)}</p>`;
+  }
+}
+
+/* DELETE SKILL */
+async function deleteSkill(id) {
+  if (!confirm("Delete this skill?")) return;
+
+  try {
+    await api(`/api/skills/${id}`, {method:"DELETE"});
+    showMessage("skillMessage", "Skill deleted.");
+
+    await loadSkills();
+    await loadDashboard();
+  } catch (error) {
+    showMessage("skillMessage", "Could not delete skill: " + error.message);
+  }
+}
+
+/* FIND TEACHERS */
+async function loadTeachers() {
+  const container = document.getElementById("teachers");
+  container.innerHTML = "<p>Loading teachers...</p>";
+
+  try {
+    const data = await api(`/api/matches/${studentId}`);
+    const matches = data.matches || [];
+
+    if (!matches.length) {
+      container.innerHTML =
+        "<p>No teachers found yet. Ask another student to add a teaching skill.</p>";
+      return;
+    }
+
+    container.innerHTML = matches.map(t => `
+      <article class="card">
+        <h3>${safe(t.name)}</h3>
+        <p>${safe(t.skill_name)} · ${safe(t.level || "Level not specified")}</p>
+        <p class="muted">
+          ${safe(t.department || "Department not provided")} ·
+          Credits: ${safe(t.skill_credits ?? 0)}
+        </p>
+        <p>${safe(t.bio || "No bio provided.")}</p>
+        <div class="actions">
+          <button onclick="sendRequest(${Number(t.id)},${Number(t.skill_id)},${JSON.stringify(String(t.skill_name || ""))})">
+            Request to Learn
+          </button>
+        </div>
+      </article>
+    `).join("");
+  } catch (error) {
+    container.innerHTML =
+      `<p>Could not load teachers: ${safe(error.message)}</p>`;
+  }
+}
+
+/* SEND REQUEST */
+async function sendRequest(teacherId, skillId, skillName) {
+  const message = prompt(
+    "Write a short message to the teacher (optional):",
+    `I would like to learn ${skillName}.`
+  ) || "";
+
+  try {
+    await api("/api/requests", {
+      method: "POST",
+      body: JSON.stringify({
+        learner_id: studentId,
+        teacher_id: teacherId,
+        skill_id: skillId,
+        message
+      })
+    });
+
+    showMessage("teacherMessage", "Learning request sent!");
+
+    await loadRequests();
+    await loadDashboard();
+  } catch (error) {
+    showMessage("teacherMessage", "Could not send request: " + error.message);
+  }
+}
+
+/* LOAD REQUESTS */
+async function loadRequests() {
+  const container = document.getElementById("requests");
+  container.innerHTML = "<p>Loading requests...</p>";
+
+  try {
+    const data = await api(`/api/requests/${studentId}`);
+    const requests = data.requests || [];
+
+    document.getElementById("requestCount").textContent = requests.length;
+
+    if (!requests.length) {
+      container.innerHTML = "<p>No learning requests yet.</p>";
+      return;
+    }
+
+    container.innerHTML = requests.map(r => {
+      const isTeacher = Number(r.teacher_id) === studentId;
+      const status = String(r.status || "pending").toLowerCase();
+
+      const actions = isTeacher && status === "pending" ? `
+        <div class="actions">
+          <button class="success" onclick="updateRequest(${Number(r.id)},'accepted')">Accept</button>
+          <button class="danger" onclick="updateRequest(${Number(r.id)},'rejected')">Reject</button>
+        </div>
+      ` : (isTeacher && status === "accepted" ? `
+        <div class="actions">
+          <button onclick="createSession(${Number(r.id)},${Number(r.learner_id)},${Number(r.teacher_id)},${Number(r.skill_id)})">
+            Schedule 1-hour Session
+          </button>
+        </div>
+      ` : "");
+
+      return `
+        <article class="card">
+          <h3>${safe(r.skill_name || "Skill request")}</h3>
+          <p>From: ${safe(r.learner_name || "Student")} → To: ${safe(r.teacher_name || "Student")}</p>
+          <p>Message: ${safe(r.message || "No message")}</p>
+          <p>Status: <strong>${safe(status.toUpperCase())}</strong></p>
+          ${actions}
+        </article>
+      `;
+    }).join("");
+  } catch (error) {
+    container.innerHTML =
+      `<p>Could not load requests: ${safe(error.message)}</p>`;
+  }
+}
+
+/* ACCEPT OR REJECT REQUEST */
+async function updateRequest(id, status) {
+  try {
+    await api(`/api/requests/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({status})
+    });
+
+    showMessage("requestMessage", "Request " + status + ".");
+
+    await loadRequests();
+    await loadDashboard();
+  } catch (error) {
+    showMessage("requestMessage", "Could not update request: " + error.message);
+  }
+}
+
+/* CREATE SESSION */
+async function createSession(requestId, learnerId, teacherId, skillId) {
+  if (!confirm("Create a 1-hour session for this accepted request?")) return;
+
+  try {
+    await api("/api/sessions", {
+      method: "POST",
+      body: JSON.stringify({
+        request_id: requestId,
+        learner_id: learnerId,
+        teacher_id: teacherId,
+        skill_id: skillId,
+        duration: 1
+      })
+    });
+
+    showMessage("requestMessage", "Session created!");
+
+    await loadSessions();
+    await loadDashboard();
+  } catch (error) {
+    showMessage("requestMessage", "Could not create session: " + error.message);
+  }
+}
+
+/* LOAD SESSIONS + COMPLETE BUTTON */
+async function loadSessions() {
+  const container = document.getElementById("sessions");
+  container.innerHTML = "<p>Loading sessions...</p>";
+
+  try {
+    const data = await api(`/api/sessions/${studentId}`);
+    const sessions = data.sessions || [];
+
+    document.getElementById("sessionCount").textContent = sessions.length;
+
+    if (!sessions.length) {
+      container.innerHTML =
+        "<p>No sessions yet. Sessions can be created from accepted requests.</p>";
+      return;
+    }
+
+    container.innerHTML = sessions.map(s => {
+      const status = String(s.status || "scheduled").toLowerCase();
+      const isParticipant =
+        Number(s.learner_id) === studentId ||
+        Number(s.teacher_id) === studentId;
+
+      const completeButton =
+        status !== "completed" && isParticipant
+          ? `<div class="actions">
+               <button class="success"
+                 onclick="completeSession(${Number(s.id)})">
+                 Mark Session Completed
+               </button>
+             </div>`
+          : "";
+
+      return `
+        <article class="card">
+          <h3>${safe(s.skill_name || "Learning session")}</h3>
+          <p>Learner: ${safe(s.learner_name || s.learner_id)}</p>
+          <p>Teacher: ${safe(s.teacher_name || s.teacher_id)}</p>
+          <p>Duration: ${safe(s.duration)} hour(s)</p>
+          <p>Status:
+            <strong class="${status === "completed" ? "status-completed" : ""}">
+              ${safe(status.toUpperCase())}
+            </strong>
+          </p>
+          ${completeButton}
+        </article>
+      `;
+    }).join("");
+  } catch (error) {
+    container.innerHTML =
+      `<p>Could not load sessions: ${safe(error.message)}</p>`;
+  }
+}
+
+/* NEW: COMPLETE SESSION AND TRANSFER CREDITS */
+async function completeSession(sessionId) {
+  const confirmed = confirm(
+    "Confirm that this session is completed?\n\n" +
+    "Learner: -10 credits\n" +
+    "Teacher: +10 credits\n\n" +
+    "This action should only be used after the session is genuinely completed."
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const result = await api(`/api/sessions/${sessionId}/complete`, {
+      method: "POST",
+      body: JSON.stringify({})
+    });
+
+    showMessage(
+      "sessionMessage",
+      result.message || "Session completed. Refreshing credit balances..."
+    );
+
+    await loadSessions();
+    await loadCredits();
+    await loadDashboard();
+  } catch (error) {
+    showMessage(
+      "sessionMessage",
+      "Could not complete session: " + error.message
+    );
+  }
+}
+
+/* SUBMIT REVIEW */
+document.getElementById("reviewForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const sessionValue = document.getElementById("reviewSession").value;
+
+  const payload = {
+    reviewer_id: studentId,
+    reviewed_id: Number(document.getElementById("reviewedId").value),
+    session_id: sessionValue ? Number(sessionValue) : null,
+    rating: Number(document.getElementById("reviewRating").value),
+    comment: document.getElementById("reviewComment").value.trim()
+  };
+
+  if (payload.reviewed_id === studentId) {
+    showMessage("reviewMessage", "You cannot review yourself.");
+    return;
+  }
+
+  try {
+    await api("/api/reviews", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+
+    showMessage("reviewMessage", "Review submitted!");
+    document.getElementById("reviewComment").value = "";
+
+    await loadReviews();
+    await loadDashboard();
+  } catch (error) {
+    showMessage("reviewMessage", "Could not submit review: " + error.message);
+  }
+});
+
+/* LOAD REVIEWS */
+async function loadReviews() {
+  const container = document.getElementById("reviews");
+  container.innerHTML = "<p>Loading reviews...</p>";
+
+  try {
+    const data = await api(`/api/reviews/${studentId}`);
+    const reviews = data.reviews || [];
+
+    if (!reviews.length) {
+      container.innerHTML = "<p>No reviews yet.</p>";
+      return;
+    }
+
+    container.innerHTML = reviews.map(r => `
+      <article class="card">
+        <h3>${"★".repeat(Math.max(0,Math.min(5,Number(r.rating)||0)))} (${safe(r.rating)}/5)</h3>
+        <p>${safe(r.comment || "No comment")}</p>
+        <p class="muted">By ${safe(r.reviewer_name || "Student")}</p>
+      </article>
+    `).join("");
+  } catch (error) {
+    container.innerHTML =
+      `<p>Could not load reviews: ${safe(error.message)}</p>`;
+  }
+}
+
+/* START DASHBOARD */
+loadDashboard();
+loadCredits();
+</script>
+</body>
+</html>
+```
