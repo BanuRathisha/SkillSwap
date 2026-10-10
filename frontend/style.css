@@ -1,0 +1,151 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3f1ff, #faf9ff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 16px;
+    color: #292653;
+}
+
+/* SkillSwap heading */
+body h1,
+header h1 {
+    width: 100%;
+    text-align: center !important;
+    font-size: 48px !important;
+    font-weight: 800;
+    color: #5146d8;
+    margin: 0 auto 8px !important;
+    display: block;
+}
+
+/* Subtitle directly below heading */
+body h1 + p,
+header p {
+    width: 100%;
+    text-align: center !important;
+    font-size: 16px;
+    color: #77758d;
+    margin: 0 auto 28px !important;
+    display: block;
+}
+
+/* Login card */
+#loginSection {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(81, 70, 216, 0.12);
+}
+
+/* Registration hidden initially */
+#registerSection {
+    display: none;
+    width: 100%;
+    max-width: 420px;
+    margin: 20px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(81, 70, 216, 0.12);
+}
+
+h2 {
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 25px;
+    color: #292653;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: -6px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #dcd9f5;
+    border-radius: 10px;
+    background: #fbfaff;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #5146d8;
+    box-shadow: 0 0 0 3px rgba(81, 70, 216, 0.1);
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #5146d8;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #3e34b8;
+}
+
+a {
+    color: #5146d8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#loginMessage,
+#registerMessage {
+    text-align: center;
+    margin-top: 10px;
+    color: #d93636;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 22px 14px;
+    }
+
+    body h1,
+    header h1 {
+        font-size: 38px !important;
+    }
+
+    #loginSection,
+    #registerSection {
+        padding: 25px 20px;
+    }
+}

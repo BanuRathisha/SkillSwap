@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillSwap - Student Skill Exchange</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="brand">
+            <h1>SkillSwap</h1>
+            <p>Student Skill Exchange Platform</p>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="loginSection" class="card">
+
+            <h2>Student Login</h2>
+
+            <form id="loginForm">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="loginMessage"></p>
+
+            <p class="switch">
+                Don't have an account?
+                <button type="button" onclick="showRegister()">
+                    Register
+                </button>
+            </p>
+
+        </div>
+
+
+        <!-- REGISTER -->
+        <div id="registerSection" class="card hidden">
+
+            <h2>Student Registration</h2>
+
+            <form id="registerForm">
+
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Create password"
+                    required
+                >
+
+                <label>Department</label>
+
+                <input
+                    type="text"
+                    id="registerDepartment"
+                    placeholder="Example: IT"
+                >
+
+                <label>Year</label>
+
+                <select id="registerYear">
+
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+
+                </select>
+
+                <button type="submit">
+                    Register
+                </button>
+
+            </form>
+
+            <p id="registerMessage"></p>
+
+            <p class="switch">
+                Already have an account?
+                <button type="button" onclick="showLogin()">
+                    Login
+                </button>
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
