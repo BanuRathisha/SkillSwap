@@ -285,7 +285,7 @@ h2{margin-top:0}
 </main>
 
 <script>
-const API_URL = window.location.origin;
+const API_URL = "https://skillswap-0hx0.onrender.com";
 let student = null;
 
 try {
@@ -330,7 +330,6 @@ function safe(value) {
     "'":"&#39;"
   }[c]));
 }
-
 async function api(path, options = {}) {
   const response = await fetch(API_URL + path, {
     ...options,
