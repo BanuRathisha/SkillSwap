@@ -8,16 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("registerForm");
 
     // Show Login page
-    function showLogin() {
-        loginSection.style.display = "block";
-        registerSection.style.display = "none";
-    }
+    window.showLogin = function () {
+    document.getElementById("registerSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+};
 
-    // Show Registration page
-    function showRegister() {
-        loginSection.style.display = "none";
-        registerSection.style.display = "block";
-    }
+window.showRegister = function () {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("registerSection").style.display = "block";
+};
 
     showLogin();
 
