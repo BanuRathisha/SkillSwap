@@ -1,4 +1,4 @@
-const API_URL = window.location.origin;
+const API_URL = "https://skillswap-0hx0.onrender.com";
 
 // Make navigation functions available to index.html onclick
 window.showLogin = function () {
