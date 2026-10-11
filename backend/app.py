@@ -1,4 +1,5 @@
-
+from flask import Flask, send_from_directory
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,6 +7,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db import get_db_connection
 
 app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 CORS(app)
 
 
@@ -26,8 +29,22 @@ def close_db(cursor, connection):
 
 @app.route("/", methods=["GET"])
 def home():
-    return jsonify({"message": "SkillSwap Backend is Running!"})
+    return send_from_directory(FRONTEND_DIR, "index.html")
 
+
+@app.route("/dashboard.html", methods=["GET"])
+def dashboard_page():
+    return send_from_directory(FRONTEND_DIR, "dashboard.html")
+
+
+@app.route("/style.css", methods=["GET"])
+def frontend_css():
+    return send_from_directory(FRONTEND_DIR, "style.css")
+
+
+@app.route("/frontend/<path:filename>", methods=["GET"])
+def frontend_files(filename):
+    return send_from_directory(FRONTEND_DIR, filename)
 
 # =========================================================
 # REGISTER - 100 STARTER CREDITS

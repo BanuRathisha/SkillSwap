@@ -1,6 +1,5 @@
 
-const API_URL = "https://skillswap-0hx0.onrender.com";
-
+const API_URL = window.location.origin;
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("loginSection");
     const registerSection = document.getElementById("registerSection");
