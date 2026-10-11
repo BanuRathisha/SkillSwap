@@ -1051,9 +1051,11 @@ def add_review():
         cursor = connection.cursor()
 
         cursor.execute("""
-            INSERT INTO reviews
-                (reviewer_id, reviewed_id, session_id, rating, comment)
-            VALUES (%s, %s, %s, %s, %s)
+            
+INSERT INTO reviews
+    (reviewer_id, reviewee_id, session_id, rating, comment)
+VALUES (%s, %s, %s, %s, %s)
+
         """, (reviewer_id, reviewed_id, session_id, rating, comment))
 
         connection.commit()
@@ -1093,7 +1095,7 @@ def get_reviews(student_id):
             SELECT r.*, reviewer.name AS reviewer_name
             FROM reviews r
             JOIN students reviewer ON r.reviewer_id = reviewer.id
-            WHERE r.reviewed_id = %s
+            WHERE r.reviewee_id = %s
             ORDER BY r.created_at DESC
         """, (student_id,))
 
