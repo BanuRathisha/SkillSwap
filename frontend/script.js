@@ -1,5 +1,5 @@
 
-const API_URL = "http://127.0.0.1:5000";
+const API_URL = "https://skillswap-0hx0.onrender.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("loginSection");
