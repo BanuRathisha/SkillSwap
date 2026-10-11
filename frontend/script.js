@@ -1,140 +1,138 @@
-
 const API_URL = window.location.origin;
-document.addEventListener("DOMContentLoaded", () => {
+
+// Make navigation functions available to index.html onclick
+window.showLogin = function () {
     const loginSection = document.getElementById("loginSection");
     const registerSection = document.getElementById("registerSection");
 
-    const loginForm = document.getElementById("loginForm");
-    const registerForm = document.getElementById("registerForm");
-
-    // Show Login page
-    window.showLogin = function () {
-    document.getElementById("registerSection").style.display = "none";
-    document.getElementById("loginSection").style.display = "block";
+    if (loginSection) loginSection.style.display = "block";
+    if (registerSection) registerSection.style.display = "none";
 };
 
 window.showRegister = function () {
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("registerSection").style.display = "block";
+    const loginSection = document.getElementById("loginSection");
+    const registerSection = document.getElementById("registerSection");
+
+    if (loginSection) loginSection.style.display = "none";
+    if (registerSection) registerSection.style.display = "block";
 };
 
-    showLogin();
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
 
-    // Handle Register/Login navigation links or buttons
-    document.addEventListener("click", (event) => {
-        const element = event.target.closest("a, button");
+    const loginMessage = document.getElementById("loginMessage");
+    const registerMessage = document.getElementById("registerMessage");
 
-        if (!element) return;
-
-        const text = element.textContent.trim().toLowerCase();
-        const id = element.id.toLowerCase();
-
-        if (
-            (id.includes("register") || id.includes("signup") ||
-             text === "register" || text === "sign up" ||
-             text.includes("create an account") ||
-             text.includes("don't have an account"))
-            && !element.closest("#registerForm")
-        ) {
-            event.preventDefault();
-            showRegister();
-        }
-
-        if (
-            (id.includes("showlogin") || id.includes("backtologin") ||
-             text === "back to login" || text === "already have an account?" ||
-             text === "login here")
-            && !element.closest("#loginForm")
-        ) {
-            event.preventDefault();
-            showLogin();
-        }
-    });
+    // Show login section initially
+    window.showLogin();
 
     // Registration
-    registerForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    if (registerForm) {
+        registerForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
-        const name = document.getElementById("registerName").value.trim();
-        const email = document.getElementById("registerEmail").value.trim();
-        const password = document.getElementById("registerPassword").value;
-        const department = document.getElementById("registerDepartment")?.value || "";
-        const year = document.getElementById("registerYear")?.value || "";
+            const name = document.getElementById("registerName").value.trim();
+            const email = document.getElementById("registerEmail").value.trim();
+            const password = document.getElementById("registerPassword").value;
+            const department =
+                document.getElementById("registerDepartment")?.value || "";
+            const year =
+                document.getElementById("registerYear")?.value || "";
 
-        const message = document.getElementById("registerMessage");
-        message.textContent = "Registering...";
+            registerMessage.textContent = "Registering...";
+            registerMessage.style.color = "black";
 
-        try {
-            const response = await fetch(`${API_URL}/api/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    department,
-                    year
-                })
-            });
+            try {
+                const response = await fetch(`${API_URL}/api/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                        department,
+                        year
+                    })
+                });
 
-            const result = await response.json();
+                const result = await response.json();
 
-            if (!response.ok || result.success === false) {
-                throw new Error(result.message || "Registration failed.");
+                if (!response.ok || result.success === false) {
+                    throw new Error(
+                        result.message || "Registration failed."
+                    );
+                }
+
+                registerMessage.style.color = "green";
+                registerMessage.textContent =
+                    result.message || "Registration successful! Please login.";
+
+                registerForm.reset();
+
+                setTimeout(() => {
+                    window.showLogin();
+                }, 1200);
+
+            } catch (error) {
+                registerMessage.style.color = "red";
+                registerMessage.textContent =
+                    error.message || "Server connection failed.";
             }
-
-            message.style.color = "green";
-            message.textContent = "Registration successful! Please login.";
-
-            registerForm.reset();
-
-            setTimeout(showLogin, 1200);
-        } catch (error) {
-            message.style.color = "red";
-            message.textContent = error.message || "Server connection failed.";
-        }
-    });
+        });
+    }
 
     // Login
-    loginForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    if (loginForm) {
+        loginForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
-        const email = document.getElementById("loginEmail").value.trim();
-        const password = document.getElementById("loginPassword").value;
+            const email = document.getElementById("loginEmail").value.trim();
+            const password =
+                document.getElementById("loginPassword").value;
 
-        const message = document.getElementById("loginMessage");
-        message.textContent = "Logging in...";
+            loginMessage.textContent = "Logging in...";
+            loginMessage.style.color = "black";
 
-        try {
-            const response = await fetch(`${API_URL}/api/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            });
+            try {
+                const response = await fetch(`${API_URL}/api/login`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-            const result = await response.json();
+                const result = await response.json();
 
-            if (!response.ok || result.success === false || !result.user) {
-                throw new Error(result.message || "Invalid email or password.");
+                if (!response.ok || result.success === false || !result.user) {
+                    throw new Error(
+                        result.message || "Invalid email or password."
+                    );
+                }
+
+                const user = result.user;
+
+                localStorage.setItem("student", JSON.stringify({
+                    student_id: user.id,
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    credit_balance: user.skill_credits ?? 100
+                }));
+
+                loginMessage.style.color = "green";
+                loginMessage.textContent = "Login successful!";
+
+                window.location.href = "dashboard.html";
+
+            } catch (error) {
+                loginMessage.style.color = "red";
+                loginMessage.textContent =
+                    error.message || "Server connection failed.";
             }
-
-            const user = result.user;
-
-            localStorage.setItem("student", JSON.stringify({
-                student_id: user.id,
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                credit_balance: user.skill_credits ?? 10
-            }));
-
-            message.style.color = "green";
-            message.textContent = "Login successful!";
-
-            window.location.href = "dashboard.html";
-        } catch (error) {
-            message.style.color = "red";
-            message.textContent = error.message || "Server connection failed.";
-        }
-    });
+        });
+    }
 });
