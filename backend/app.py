@@ -1169,7 +1169,7 @@ def dashboard_data(student_id):
 
         cursor.execute("""
             SELECT COALESCE(AVG(rating), 0) AS average_rating
-            FROM reviews WHERE reviewed_id = %s
+            FROM reviews WHERE reviewee_id = %s
         """, (student_id,))
         rating_data = cursor.fetchone()
 
