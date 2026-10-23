@@ -1,36 +1,37 @@
 
 /* ==========================================
-   SkillSwap - Premium Black & Grey Theme
+   SkillSwap - White and Purple Premium Theme
    Frontend: HTML, CSS, JavaScript
    ========================================== */
 
 /* ---------- 1. Theme Variables ---------- */
 
 :root {
-    --bg-main: #111111;
-    --bg-secondary: #171717;
-    --bg-card: #1f1f1f;
-    --bg-card-hover: #292929;
-    --bg-input: #141414;
-    --bg-navbar: #0a0a0a;
+    --bg-main: #ffffff;
+    --bg-secondary: #f7f4ff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f7f4ff;
+    --bg-input: #ffffff;
+    --bg-navbar: #ffffff;
+    --bg-hover: #f7f4ff;
 
-    --text-main: #f5f5f5;
-    --text-secondary: #b8b8b8;
-    --text-muted: #929292;
+    --text-main: #2e2445;
+    --text-secondary: #6b6478;
+    --text-muted: #6b6478;
 
-    --border-color: #383838;
-    --border-light: #4a4a4a;
+    --border-color: #e5ddfb;
+    --border-light: #d8ccf5;
 
-    --accent: #e5e5e5;
-    --accent-hover: #cccccc;
-    --accent-text: #111111;
+    --accent: #7c3aed;
+    --accent-hover: #6d28d9;
+    --accent-text: #ffffff;
 
-    --success: #4ade80;
-    --danger: #f87171;
-    --warning: #fbbf24;
-    --info: #93c5fd;
+    --success: #047857;
+    --danger: #b91c1c;
+    --warning: #8a5b00;
+    --info: #6d28d9;
 
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow: 0 8px 24px rgba(46, 36, 69, 0.08);
     --radius: 12px;
     --transition: 0.2s ease;
 }
@@ -61,13 +62,13 @@ img {
 }
 
 a {
-    color: #e0e0e0;
+    color: var(--accent);
     text-decoration: none;
     transition: color var(--transition);
 }
 
 a:hover {
-    color: #ffffff;
+    color: var(--accent-hover);
 }
 
 button,
@@ -165,7 +166,7 @@ nav a,
 nav a:hover,
 .navbar a:hover,
 .topbar a:hover {
-    color: #ffffff;
+    color: var(--accent-hover);
     background: var(--bg-card-hover);
 }
 
@@ -186,7 +187,7 @@ nav a:hover,
 .sidebar a:hover,
 .sidebar a.active {
     background: var(--bg-card-hover);
-    color: #ffffff;
+    color: var(--accent-hover);
 }
 
 /* ---------- 6. Login and Registration ---------- */
@@ -333,8 +334,8 @@ textarea::placeholder {
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: #a3a3a3;
-    box-shadow: 0 0 0 3px rgba(229, 229, 229, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
 }
 
 select option {
@@ -350,7 +351,7 @@ textarea {
 input[type="checkbox"],
 input[type="radio"] {
     width: auto;
-    accent-color: #d4d4d4;
+    accent-color: var(--accent);
 }
 
 input[type="file"] {
@@ -383,7 +384,7 @@ button:hover,
 .btn-primary:hover,
 button[type="submit"]:hover,
 input[type="submit"]:hover {
-    color: #000000;
+    color: #ffffff;
     background: var(--accent-hover);
     border-color: var(--accent-hover);
 }
@@ -395,6 +396,9 @@ button:active,
 
 button:disabled,
 .btn:disabled {
+    color: #6b6478;
+    background: #ddd6e8;
+    border-color: #ddd6e8;
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -408,22 +412,22 @@ button.secondary {
 
 .btn-secondary:hover,
 button.secondary:hover {
-    background: #404040;
+    background: var(--accent-hover);
     color: #ffffff;
 }
 
 .btn-danger,
 button.danger {
-    background: #7f1d1d;
-    border-color: #991b1b;
-    color: #ffffff;
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: var(--danger);
 }
 
 .btn-success,
 button.success {
-    background: #166534;
-    border-color: #15803d;
-    color: #ffffff;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+    color: var(--success);
 }
 
 /* ---------- 11. Tabs ---------- */
@@ -450,14 +454,14 @@ button.success {
 .tab-button:hover,
 .tabs button:hover {
     background: var(--bg-hover);
-    color: #ffffff;
+    color: var(--accent-hover);
 }
 
 .tab.active,
 .tab-button.active,
 .tabs button.active {
     background: var(--accent);
-    color: #111111;
+    color: #ffffff;
     border-color: var(--accent);
 }
 
@@ -559,7 +563,7 @@ tbody tr:hover {
 .credits-card,
 .credit-card {
     padding: 22px;
-    background: linear-gradient(135deg, #252525, #151515);
+    background: var(--bg-card);
     color: var(--text-main);
     border: 1px solid var(--border-light);
     border-radius: 14px;
@@ -570,7 +574,7 @@ tbody tr:hover {
 .credit-card .balance {
     font-size: 32px;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--accent);
 }
 
 .credit-history,
@@ -625,14 +629,14 @@ footer {
 /* ---------- 19. Focus Accessibility ---------- */
 
 :focus-visible {
-    outline: 2px solid #d4d4d4;
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
 
 /* ---------- 20. Scrollbar ---------- */
 
 * {
-    scrollbar-color: #525252 #171717;
+    scrollbar-color: #c4b5fd #f7f4ff;
 }
 
 *::-webkit-scrollbar {
@@ -641,11 +645,11 @@ footer {
 }
 
 *::-webkit-scrollbar-track {
-    background: #171717;
+    background: #f7f4ff;
 }
 
 *::-webkit-scrollbar-thumb {
-    background: #525252;
+    background: #c4b5fd;
     border-radius: 10px;
 }
 
@@ -711,5 +715,136 @@ footer {
     th,
     td {
         padding: 9px;
+    }
+}
+
+/* Auth page uses its existing markup and stays centered on the available viewport. */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main.container {
+    width: min(450px, calc(100% - 32px));
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 32px 0;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brand-section {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.brand-section h1 {
+    margin-bottom: 6px;
+    font-size: clamp(30px, 5vw, 38px);
+}
+
+.brand-section p {
+    margin: 0;
+}
+
+.form-box {
+    width: 100%;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.form-box h2 {
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+.form-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-box label {
+    margin: 4px 0 0;
+    color: var(--text-main);
+}
+
+.form-box input,
+.form-box select {
+    min-width: 0;
+    color: var(--text-main);
+    background: var(--bg-input);
+    border-color: var(--border-color);
+}
+
+.form-box form button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.switch-text {
+    margin: 18px 0 0;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.text-button {
+    padding: 0;
+    color: var(--accent);
+    background: transparent;
+    border: 0;
+    font-weight: 700;
+}
+
+.text-button:hover {
+    color: var(--accent-hover);
+    background: transparent;
+    border: 0;
+    text-decoration: underline;
+}
+
+.form-box .message {
+    padding: 10px 12px;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    text-align: center;
+}
+
+#loginMessage[style*="green"],
+#registerMessage[style*="green"] {
+    color: var(--success) !important;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+#loginMessage[style*="red"],
+#registerMessage[style*="red"] {
+    color: var(--danger) !important;
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+#loginMessage[style*="black"],
+#registerMessage[style*="black"] {
+    color: var(--text-main) !important;
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+@media (max-width: 480px) {
+    main.container {
+        width: min(450px, calc(100% - 24px));
+        padding: 20px 0;
+    }
+
+    .form-box {
+        padding: 22px;
     }
 }
