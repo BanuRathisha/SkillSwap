@@ -7,145 +7,219 @@
 
 body {
     font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #444444;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f3f1ff, #faf9ff);
+}
+
+/* Top navigation */
+.top-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px 5%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    padding: 30px 16px;
-    color: #292653;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333333;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logo-symbol {
+    font-size: 25px;
+}
+
+.top-header p {
+    color: #444444;
+    font-size: 13px;
+}
+
+/* Main container */
+.container {
+    width: 100%;
+    max-width: 460px;
+    margin: 48px auto;
+    padding: 0 15px;
 }
 
 /* SkillSwap heading */
-body h1,
-header h1 {
-    width: 100%;
-    text-align: center !important;
-    font-size: 48px !important;
-    font-weight: 800;
-    color: #5146d8;
-    margin: 0 auto 8px !important;
-    display: block;
-}
-
-/* Subtitle directly below heading */
-body h1 + p,
-header p {
-    width: 100%;
-    text-align: center !important;
-    font-size: 16px;
-    color: #77758d;
-    margin: 0 auto 28px !important;
-    display: block;
-}
-
-/* Login card */
-#loginSection {
-    display: block;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    padding: 35px;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 12px 35px rgba(81, 70, 216, 0.12);
-}
-
-/* Registration hidden initially */
-#registerSection {
-    display: none;
-    width: 100%;
-    max-width: 420px;
-    margin: 20px auto;
-    padding: 35px;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 12px 35px rgba(81, 70, 216, 0.12);
-}
-
-h2 {
+.brand-section {
     text-align: center;
-    font-size: 25px;
-    margin-bottom: 25px;
-    color: #292653;
+    margin-bottom: 28px;
+}
+
+.brand-section h1 {
+    color: #333333;
+    font-size: 36px;
+    margin-bottom: 7px;
+}
+
+.brand-section p {
+    color: #444444;
+    font-size: 14px;
+}
+
+/* Login and registration form */
+.form-box {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 30px;
+}
+
+.form-box h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 24px;
+    color: #333333;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
 }
 
 label {
     font-size: 14px;
-    margin-bottom: -6px;
+    font-weight: bold;
+    margin-top: 4px;
+    color: #444444;
 }
 
 input,
 select {
     width: 100%;
-    padding: 13px;
-    border: 1px solid #dcd9f5;
-    border-radius: 10px;
-    background: #fbfaff;
+    padding: 11px;
     font-size: 14px;
-    outline: none;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #444444;
 }
 
 input:focus,
 select:focus {
-    border-color: #5146d8;
-    box-shadow: 0 0 0 3px rgba(81, 70, 216, 0.1);
+    outline: none;
+    border-color: #777777;
+    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.08);
 }
 
-button {
-    width: 100%;
-    padding: 13px;
+form button {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #333333;
+    color: #ffffff;
     border: none;
-    border-radius: 10px;
-    background: #5146d8;
-    color: white;
+    border-radius: 4px;
     font-size: 15px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #222222;
+}
+
+/* Login and registration switch */
+.switch-text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #444444;
+}
+
+.text-button {
+    background: none;
+    border: none;
+    color: #333333;
+    font-size: 13px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-button:hover {
-    background: #3e34b8;
-}
-
-a {
-    color: #5146d8;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
+.text-button:hover {
     text-decoration: underline;
+}
+
+/* Login and registration messages */
+.message {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 13px;
+    overflow-wrap: anywhere;
 }
 
 #loginMessage,
 #registerMessage {
-    text-align: center;
-    margin-top: 10px;
-    color: #d93636;
-    font-size: 14px;
+    color: #444444 !important;
 }
 
+#loginMessage:empty,
+#registerMessage:empty {
+    display: none;
+}
+
+#registerForm {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+}
+
+#registerForm button {
+    grid-column: 1 / -1;
+}
+
+#registerForm label[for="registerName"] { grid-column: 1; grid-row: 1; }
+#registerForm #registerName { grid-column: 1; grid-row: 2; }
+#registerForm label[for="registerEmail"] { grid-column: 2; grid-row: 1; }
+#registerForm #registerEmail { grid-column: 2; grid-row: 2; }
+#registerForm label[for="registerPassword"] { grid-column: 1; grid-row: 3; }
+#registerForm #registerPassword { grid-column: 1; grid-row: 4; }
+#registerForm label[for="registerDepartment"] { grid-column: 2; grid-row: 3; }
+#registerForm #registerDepartment { grid-column: 2; grid-row: 4; }
+#registerForm label[for="registerYear"] { grid-column: 1 / -1; grid-row: 5; }
+#registerForm #registerYear { grid-column: 1 / -1; grid-row: 6; }
+#registerForm button { grid-row: 7; }
+
+#registerForm input,
+#registerForm select {
+    min-width: 0;
+}
+
+/* Mobile layout */
 @media (max-width: 480px) {
-    body {
-        padding: 22px 14px;
+    .top-header {
+        padding: 14px;
     }
 
-    body h1,
-    header h1 {
-        font-size: 38px !important;
+    .top-header p {
+        font-size: 11px;
     }
 
-    #loginSection,
-    #registerSection {
-        padding: 25px 20px;
+    .brand-section h1 {
+        font-size: 30px;
+    }
+
+    .form-box {
+        padding: 22px;
+    }
+
+    #registerForm {
+        grid-template-columns: 1fr;
+    }
+
+    #registerForm label,
+    #registerForm input,
+    #registerForm select,
+    #registerForm button,
+    #registerForm p {
+        grid-column: 1 !important;
+        grid-row: auto !important;
     }
 }

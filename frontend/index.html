@@ -1,33 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SkillSwap - Student Skill Exchange</title>
-
+    <title>SkillSwap - Student Skill Exchange System</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="container">
-
-        <div class="brand">
-            <h1>SkillSwap</h1>
-            <p>Student Skill Exchange Platform</p>
+    <!-- Top Navigation -->
+    <header class="top-header">
+        <div class="logo">
+            <span class="logo-symbol">⇄</span>
+            <span>SkillSwap</span>
         </div>
+        <p>Student Skill Exchange Platform</p>
+    </header>
 
-        <!-- LOGIN -->
-        <div id="loginSection" class="card">
+    <!-- Main Content -->
+    <main class="container">
 
+        <section class="brand-section">
+            <h1>SkillSwap</h1>
+            <p>Student Skill Exchange System</p>
+        </section>
+
+        <!-- Login Form -->
+        <section class="form-box" id="loginSection">
             <h2>Student Login</h2>
 
             <form id="loginForm">
-
-                <label>Email</label>
-
+                <label for="loginEmail">Email</label>
                 <input
                     type="email"
                     id="loginEmail"
@@ -35,8 +39,7 @@
                     required
                 >
 
-                <label>Password</label>
-
+                <label for="loginPassword">Password</label>
                 <input
                     type="password"
                     id="loginPassword"
@@ -44,33 +47,27 @@
                     required
                 >
 
-                <button type="submit">
-                    Login
-                </button>
-
+                <button type="submit">Login</button>
             </form>
 
-            <p id="loginMessage"></p>
+            <p id="loginMessage" class="message"></p>
 
-            <p class="switch">
+            <p class="switch-text">
                 Don't have an account?
-                <button type="button" onclick="showRegister()">
-                    Register
-                </button>
+                <button
+                    type="button"
+                    class="text-button"
+                    onclick="showRegister()"
+                >Register</button>
             </p>
+        </section>
 
-        </div>
-
-
-        <!-- REGISTER -->
-        <div id="registerSection" class="card hidden">
-
+        <!-- Registration Form -->
+        <section class="form-box" id="registerSection" style="display: none;">
             <h2>Student Registration</h2>
 
             <form id="registerForm">
-
-                <label>Name</label>
-
+                <label for="registerName">Name</label>
                 <input
                     type="text"
                     id="registerName"
@@ -78,8 +75,7 @@
                     required
                 >
 
-                <label>Email</label>
-
+                <label for="registerEmail">Email</label>
                 <input
                     type="email"
                     id="registerEmail"
@@ -87,55 +83,46 @@
                     required
                 >
 
-                <label>Password</label>
-
+                <label for="registerPassword">Password</label>
                 <input
                     type="password"
                     id="registerPassword"
-                    placeholder="Create password"
+                    placeholder="Create a password"
                     required
                 >
 
-                <label>Department</label>
-
+                <label for="registerDepartment">Department</label>
                 <input
                     type="text"
                     id="registerDepartment"
                     placeholder="Example: IT"
                 >
 
-                <label>Year</label>
-
+                <label for="registerYear">Year</label>
                 <select id="registerYear">
-
                     <option value="1">1st Year</option>
                     <option value="2">2nd Year</option>
                     <option value="3">3rd Year</option>
                     <option value="4">4th Year</option>
-
                 </select>
 
-                <button type="submit">
-                    Register
-                </button>
-
+                <button type="submit">Register</button>
             </form>
 
-            <p id="registerMessage"></p>
+            <p id="registerMessage" class="message"></p>
 
-            <p class="switch">
+            <p class="switch-text">
                 Already have an account?
-                <button type="button" onclick="showLogin()">
-                    Login
-                </button>
+                <button
+                    type="button"
+                    class="text-button"
+                    onclick="showLogin()"
+                >Login</button>
             </p>
+        </section>
 
-        </div>
-
-    </div>
+    </main>
 
     <script src="script.js"></script>
-
 </body>
-
 </html>

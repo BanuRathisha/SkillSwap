@@ -6,86 +6,630 @@
 <title>SkillSwap Dashboard</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5fb;color:#25233a}
-header{background:linear-gradient(120deg,#6554d9,#8e55c7);color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-header h1{margin:0;font-size:26px}
-button{border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:bold;background:#6b55d9;color:white}
-button:hover{opacity:.88}
-button:disabled{opacity:.5;cursor:not-allowed}
-.logout{background:white;color:#6249c9}
-main{max-width:1150px;margin:24px auto;padding:0 16px}
-.panel,.stat,.card{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 14px #25233a0d;margin-bottom:16px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:20px 0}
-.stat h3{margin:0;color:#716d83;font-size:14px}
-.stat p{font-size:27px;font-weight:bold;margin:10px 0 0;color:#634bd0}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-nav button{background:#e8e4fb;color:#4e3c9c}
-nav button.active{background:#6652d5;color:white}
-.tab{display:none}
-.tab.active{display:block}
-form{display:grid;gap:12px;max-width:650px}
-input,select,textarea{width:100%;padding:11px;border:1px solid #d9d6e5;border-radius:8px;font:inherit}
-textarea{min-height:75px;resize:vertical}
-label{font-weight:bold;font-size:14px}
-.field{display:grid;gap:6px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.card h3{margin-top:0;color:#5944bf}
-.muted{color:#77738a;font-size:14px}
-.message{margin:12px 0;padding:10px;border-radius:8px;background:#f0edff;color:#4e3c9c;overflow-wrap:anywhere}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.secondary{background:#e8e4fb;color:#4e3c9c}
-.danger{background:#c53f57}
-.success{background:#25845d}
-hr{border:0;border-top:1px solid #eee;margin:18px 0}
-h2{margin-top:0}
-.wallet-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.wallet-title h2{margin:0}
-.wallet-note{font-size:14px;color:#77738a;line-height:1.6}
-.credit-number{overflow-wrap:anywhere}
-.transaction{padding:12px;border:1px solid #eee;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.transaction h4{margin:0 0 5px}
-.transaction p{margin:4px 0;font-size:13px;color:#77738a}
-.earned{color:#25845d;font-weight:bold}
-.spent{color:#c53f57;font-weight:bold}
-.status-completed{color:#25845d}
-@media(max-width:500px){
- header h1{font-size:21px}
- .panel{padding:15px}
- .transaction{align-items:flex-start}
+
+* {
+    box-sizing: border-box;
 }
+
+.profile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    background: #f5f5f5;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333333;
+    line-height: 1.5;
+}
+
+/* Header */
+header {
+    background: #ffffff;
+    color: #333333;
+    padding: 10px max(24px, calc((100% - 1240px) / 2));
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #333333;
+}
+
+header div {
+    color: #444444;
+    font-size: 13px;
+}
+
+/* Main page */
+main {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 0 20px;
+}
+
+/* General panels */
+.panel,
+.stat,
+.card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: none;
+    margin-bottom: 16px;
+}
+
+h2 {
+    color: #333333;
+    font-size: 21px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #444444;
+    font-size: 16px;
+}
+
+p {
+    overflow-wrap: anywhere;
+}
+
+.muted {
+    color: #666666;
+    font-size: 14px;
+}
+
+/* Logout button */
+button {
+    padding: 10px 15px;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background: #333333;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #222222;
+    border-color: #222222;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.logout {
+    background: #ffffff;
+    color: #333333;
+    border: 1px solid #777777;
+}
+
+.logout:hover {
+    background: #f0f0f0;
+    color: #222222;
+}
+
+/* Dashboard statistics */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.stat {
+    margin-bottom: 0;
+    padding: 18px;
+}
+
+.stat h3 {
+    margin: 0;
+    color: #444444;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.stat p {
+    margin: 10px 0 0;
+    color: #333333;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+/* Top navigation */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+}
+
+nav button {
+    background: #ffffff;
+    color: #444444;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 14px 10px 12px;
+    white-space: nowrap;
+}
+
+nav button:hover {
+    background: #f5f5f5;
+    color: #333333;
+    border-color: transparent;
+}
+
+nav button.active {
+    background: #ffffff;
+    color: #333333;
+    border-color: #333333;
+}
+
+/* Tabs */
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.dashboard-home[hidden],
+.tab[hidden] {
+    display: none;
+}
+
+.account-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.brand {
+    white-space: nowrap;
+}
+
+.account-name {
+    color: #444444;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.welcome-panel {
+    border: 0;
+    padding: 4px 0 2px;
+    background: transparent;
+}
+
+.welcome-panel h2 {
+    font-size: 25px;
+    margin-bottom: 4px;
+}
+
+.stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 18px 0 24px;
+}
+
+.stat,
+.panel,
+.card,
+.transaction {
+    border-radius: 8px;
+}
+
+.stat {
+    border-color: #e0e0e0;
+    padding: 17px 18px;
+}
+
+.stat p {
+    color: #333333;
+}
+
+.dashboard-home .stat:first-child p {
+    color: #333333;
+}
+
+.profile-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    margin: 0 0 24px;
+    padding: 18px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.profile-summary p {
+    margin: 4px 0 0;
+}
+
+.profile-summary .muted {
+    margin: 0;
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.page-heading h2 {
+    margin: 0;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 20px;
+}
+
+.form-grid button,
+.form-grid .message {
+    grid-column: 1 / -1;
+}
+
+/* Forms */
+form {
+    display: grid;
+    gap: 12px;
+    max-width: 650px;
+}
+
+.field {
+    display: grid;
+    gap: 6px;
+}
+
+label {
+    color: #444444;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 11px;
+    margin: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #333333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #777777;
+}
+
+textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+/* Messages */
+.message {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #f5f5f5;
+    color: #444444;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.message[hidden] {
+    display: none;
+}
+
+/* Cards and grids */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.grid .card {
+    margin-bottom: 0;
+    padding: 18px;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.card p {
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+/* Action buttons */
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.secondary {
+    background: #ffffff;
+    color: #333333;
+    border: 1px solid #777777;
+}
+
+.secondary:hover {
+    background: #f0f0f0;
+    color: #222222;
+}
+
+.danger {
+    background: #ffffff;
+    color: #444444;
+    border: 1px solid #999999;
+}
+
+.danger:hover {
+    background: #f0f0f0;
+    color: #222222;
+}
+
+.success {
+    background: #ffffff;
+    color: #444444;
+    border: 1px solid #999999;
+}
+
+.success:hover {
+    background: #f0f0f0;
+    color: #222222;
+}
+
+/* Credit wallet */
+.wallet-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.wallet-title h2 {
+    margin: 0;
+}
+
+.wallet-note {
+    margin: 14px 0;
+    color: #555555;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.credit-number {
+    overflow-wrap: anywhere;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.transaction h4 {
+    margin: 0 0 5px;
+    color: #333333;
+}
+
+.transaction p {
+    margin: 4px 0;
+    color: #666666;
+    font-size: 13px;
+}
+
+.earned {
+    color: #444444;
+    font-weight: bold;
+}
+
+.spent {
+    color: #444444;
+    font-weight: bold;
+}
+
+.status-completed {
+    color: #444444;
+}
+
+/* Dividers */
+hr {
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+    header {
+        position: static;
+        padding: 12px 16px;
+        grid-template-columns: 1fr auto;
+        gap: 8px 12px;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    main {
+        margin: 16px auto;
+        padding: 0 12px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .stat {
+        padding: 13px;
+    }
+
+    .stat p {
+        font-size: 23px;
+    }
+
+    nav {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        overflow-x: auto;
+        margin: 0 -8px;
+        padding: 0 8px;
+    }
+
+    nav button {
+        padding: 11px 10px 9px;
+        font-size: 13px;
+    }
+
+    .account-actions {
+        gap: 8px;
+    }
+
+    .account-name {
+        display: none;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .transaction {
+        align-items: flex-start;
+    }
+
+    .wallet-title {
+        align-items: flex-start;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .profile-summary,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid button,
+    .form-grid .message {
+        grid-column: auto;
+    }
+}
+
 </style>
 </head>
 
 <body>
 <header>
-  <div>
+  <div class="brand">
     <h1>SkillSwap</h1>
-    <div>Student Skill Exchange Platform</div>
   </div>
-  <button class="logout" onclick="logout()">Logout</button>
+  <nav aria-label="Main navigation">
+    <button class="active" onclick="openTab('homeTab',this)">Home</button>
+    <button onclick="openTab('profileTab',this)">Profile</button>
+    <button onclick="openTab('skillsTab',this)">Skills</button>
+    <button onclick="openTab('requestsTab',this)">Requests</button>
+    <button onclick="openTab('sessionsTab',this)">Sessions</button>
+    <button onclick="openTab('reviewsTab',this)">Reviews</button>
+    <button onclick="openTab('creditsTab',this)">Credits</button>
+  </nav>
+  <div class="account-actions">
+    <span id="profileIcon" class="profile-icon" aria-hidden="true">S</span>
+    <span id="navigationName" class="account-name">Student</span>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
 </header>
 
 <main>
-  <section class="panel">
-    <h2 id="welcome">Welcome!</h2>
-    <p class="muted">Share what you know. Learn something new.</p>
-    <div id="topMessage" class="message">Loading your dashboard...</div>
+  <section id="homeTab" class="tab active dashboard-home">
+    <section class="panel welcome-panel">
+      <h2 id="welcome">Welcome!</h2>
+      <p class="muted">Here is an overview of your SkillSwap activity.</p>
+      <div id="topMessage" class="message" hidden></div>
+    </section>
+
+    <section class="stats">
+      <div class="stat"><h3>Skill Credits</h3><p id="credits">0</p></div>
+      <div class="stat"><h3>My Skills</h3><p id="skillCount">0</p></div>
+      <div class="stat"><h3>Pending Requests</h3><p id="requestCount">0</p></div>
+      <div class="stat"><h3>Completed Sessions</h3><p id="sessionCount">0</p></div>
+    </section>
   </section>
 
-  <!-- DASHBOARD STATISTICS -->
-  <section class="stats">
-    <div class="stat"><h3>Skill Credits</h3><p id="credits">0</p></div>
-    <div class="stat"><h3>My Skills</h3><p id="skillCount">0</p></div>
-    <div class="stat"><h3>Requests</h3><p id="requestCount">0</p></div>
-    <div class="stat"><h3>Sessions</h3><p id="sessionCount">0</p></div>
-    <div class="stat"><h3>Average Rating</h3><p id="rating">0.0</p></div>
-  </section>
-
-  <!-- NEW: CREDIT WALLET -->
-  <section class="panel" id="creditWallet">
+  <!-- CREDIT WALLET -->
+  <section class="panel tab" id="creditsTab">
     <div class="wallet-title">
-      <h2>💜 My Credit Wallet</h2>
+      <h2> My Credit Wallet</h2>
       <button class="secondary" onclick="loadCredits()">Refresh Wallet</button>
     </div>
 
@@ -118,21 +662,38 @@ h2{margin-top:0}
     </div>
   </section>
 
-  <!-- NAVIGATION -->
-  <nav>
-    <button class="active" onclick="openTab('profileTab',this)">Profile</button>
-    <button onclick="openTab('skillsTab',this)">My Skills</button>
-    <button onclick="openTab('teachersTab',this)">Find Teachers</button>
-    <button onclick="openTab('requestsTab',this)">Requests</button>
-    <button onclick="openTab('sessionsTab',this)">Sessions</button>
-    <button onclick="openTab('reviewsTab',this)">Reviews</button>
-  </nav>
-
   <!-- PROFILE -->
-  <section id="profileTab" class="tab active panel">
-    <h2>My Profile</h2>
+  <section id="profileTab" class="tab panel" hidden>
+    <div class="page-heading"><h2>My Profile</h2></div>
+    <div class="profile-summary">
+      <div>
+        <p class="muted">Name</p>
+        <p id="profileName">Student</p>
+      </div>
+      <div>
+        <p class="muted">Email</p>
+        <p id="profileEmail">Not available</p>
+      </div>
+      <div>
+        <p class="muted">Department</p>
+        <p id="profileDepartment">Not provided</p>
+      </div>
+      <div>
+        <p class="muted">Year</p>
+        <p id="profileYear">Not provided</p>
+      </div>
+      <div>
+        <p class="muted">About me</p>
+        <p id="profileBio">No bio provided.</p>
+      </div>
+      <div>
+        <p class="muted">Skills</p>
+        <p id="profileSkills">No skill preferences added.</p>
+      </div>
+    </div>
 
-    <form id="profileForm">
+    <h3>Edit Profile</h3>
+    <form id="profileForm" class="form-grid">
       <div class="field">
         <label for="name">Full name</label>
         <input id="name" required>
@@ -176,8 +737,8 @@ h2{margin-top:0}
   </section>
 
   <!-- MY SKILLS -->
-  <section id="skillsTab" class="tab panel">
-    <h2>My Skills</h2>
+  <section id="skillsTab" class="tab panel" hidden>
+    <div class="page-heading"><h2>My Skills</h2></div>
     <p class="muted">Add a skill you can teach or want to learn.</p>
 
     <form id="skillForm">
@@ -210,11 +771,8 @@ h2{margin-top:0}
     <hr>
     <h3>Added Skills</h3>
     <div id="mySkills" class="grid"></div>
-  </section>
-
-  <!-- FIND TEACHERS -->
-  <section id="teachersTab" class="tab panel">
-    <h2>Find Teachers</h2>
+    <hr>
+    <h3>Find Teachers</h3>
     <p class="muted">Browse students who offer skills to teach.</p>
     <button onclick="loadTeachers()">Refresh Teachers</button>
     <div id="teacherMessage" class="message" hidden></div>
@@ -222,8 +780,8 @@ h2{margin-top:0}
   </section>
 
   <!-- REQUESTS -->
-  <section id="requestsTab" class="tab panel">
-    <h2>Learning Requests</h2>
+  <section id="requestsTab" class="tab panel" hidden>
+    <div class="page-heading"><h2>Learning Requests</h2></div>
     <p class="muted">View requests you sent and requests you received.</p>
     <button onclick="loadRequests()">Refresh Requests</button>
     <div id="requestMessage" class="message" hidden></div>
@@ -231,8 +789,8 @@ h2{margin-top:0}
   </section>
 
   <!-- SESSIONS -->
-  <section id="sessionsTab" class="tab panel">
-    <h2>Learning Sessions</h2>
+  <section id="sessionsTab" class="tab panel" hidden>
+    <div class="page-heading"><h2>Learning Sessions</h2></div>
     <p class="muted">
       Each completed one-hour session transfers 10 credits:
       the learner spends 10 and the teacher earns 10.
@@ -243,8 +801,8 @@ h2{margin-top:0}
   </section>
 
   <!-- REVIEWS -->
-  <section id="reviewsTab" class="tab panel">
-    <h2>Reviews</h2>
+  <section id="reviewsTab" class="tab panel" hidden>
+    <div class="page-heading"><h2>Reviews</h2></div>
 
     <form id="reviewForm">
       <div class="field">
@@ -300,19 +858,29 @@ if (!student || !(student.student_id || student.id)) {
 }
 
 const studentId = Number(student?.student_id || student?.id);
+document.getElementById("navigationName").textContent = student?.name || "Student";
+document.getElementById("welcome").textContent =
+  "Welcome, " + (student?.name || "Student") + "!";
+document.getElementById("profileIcon").textContent =
+  (student?.name || "S").trim().charAt(0).toUpperCase();
 
 function openTab(id, button) {
-  document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(el => {
+    el.classList.remove("active");
+    el.hidden = true;
+  });
   document.querySelectorAll("nav button").forEach(el => el.classList.remove("active"));
 
-  document.getElementById(id).classList.add("active");
+  const section = document.getElementById(id);
+  section.hidden = false;
+  section.classList.add("active");
   if (button) button.classList.add("active");
 
   if (id === "skillsTab") loadSkills();
-  if (id === "teachersTab") loadTeachers();
   if (id === "requestsTab") loadRequests();
   if (id === "sessionsTab") loadSessions();
   if (id === "reviewsTab") loadReviews();
+  if (id === "creditsTab") loadCredits();
 }
 
 function showMessage(id, message) {
@@ -361,9 +929,27 @@ function fillProfile(user) {
   document.getElementById("bio").value = user.bio || "";
   document.getElementById("teachText").value = user.skills_to_teach || "";
   document.getElementById("learnText").value = user.skills_to_learn || "";
+  document.getElementById("profileName").textContent = user.name || "Student";
+  document.getElementById("profileEmail").textContent =
+    user.email || student.email || "Not available";
+  document.getElementById("profileDepartment").textContent =
+    user.department || "Not provided";
+  document.getElementById("profileYear").textContent =
+    user.year == null ? "Not provided" : `Year ${user.year}`;
+  document.getElementById("profileBio").textContent =
+    user.bio || "No bio provided.";
+  document.getElementById("profileSkills").textContent =
+    [
+      user.skills_to_teach ? `Can teach: ${user.skills_to_teach}` : "",
+      user.skills_to_learn ? `Wants to learn: ${user.skills_to_learn}` : ""
+    ].filter(Boolean).join(" · ") || "No skill preferences added.";
 
   document.getElementById("welcome").textContent =
     "Welcome, " + (user.name || "Student") + "!";
+  document.getElementById("navigationName").textContent =
+    user.name || "Student";
+  document.getElementById("profileIcon").textContent =
+    (user.name || "S").trim().charAt(0).toUpperCase();
 
   if (user.skill_credits != null) {
     document.getElementById("credits").textContent = user.skill_credits;
@@ -390,11 +976,6 @@ async function loadDashboard() {
 
     const stats = data.stats || {};
     document.getElementById("skillCount").textContent = stats.total_skills ?? 0;
-    document.getElementById("requestCount").textContent = stats.total_requests ?? 0;
-    document.getElementById("sessionCount").textContent = stats.total_sessions ?? 0;
-    document.getElementById("rating").textContent =
-      Number(stats.average_rating || 0).toFixed(1);
-
     showMessage("topMessage", "Dashboard loaded successfully.");
   } catch (error) {
     showMessage("topMessage", "Dashboard: " + error.message);
@@ -645,7 +1226,10 @@ async function loadRequests() {
     const data = await api(`/api/requests/${studentId}`);
     const requests = data.requests || [];
 
-    document.getElementById("requestCount").textContent = requests.length;
+    document.getElementById("requestCount").textContent =
+      requests.filter(request =>
+        String(request.status || "pending").toLowerCase() === "pending"
+      ).length;
 
     if (!requests.length) {
       container.innerHTML = "<p>No learning requests yet.</p>";
@@ -736,7 +1320,10 @@ async function loadSessions() {
     const data = await api(`/api/sessions/${studentId}`);
     const sessions = data.sessions || [];
 
-    document.getElementById("sessionCount").textContent = sessions.length;
+    document.getElementById("sessionCount").textContent =
+      sessions.filter(session =>
+        String(session.status || "").toLowerCase() === "completed"
+      ).length;
 
     if (!sessions.length) {
       container.innerHTML =
@@ -863,13 +1450,17 @@ async function loadReviews() {
       return;
     }
 
-    container.innerHTML = reviews.map(r => `
-      <article class="card">
-        <h3>${"★".repeat(Math.max(0,Math.min(5,Number(r.rating)||0)))} (${safe(r.rating)}/5)</h3>
-        <p>${safe(r.comment || "No comment")}</p>
-        <p class="muted">By ${safe(r.reviewer_name || "Student")}</p>
-      </article>
-    `).join("");
+    container.innerHTML = reviews.map(r => {
+      const reviewDate = r.created_at || r.review_date || r.date;
+      return `
+        <article class="card">
+          <h3>${"★".repeat(Math.max(0,Math.min(5,Number(r.rating)||0)))} (${safe(r.rating)}/5)</h3>
+          <p>${safe(r.comment || "No comment")}</p>
+          <p class="muted">By ${safe(r.reviewer_name || "Student")}</p>
+          ${reviewDate ? `<p class="muted">${safe(reviewDate)}</p>` : ""}
+        </article>
+      `;
+    }).join("");
   } catch (error) {
     container.innerHTML =
       `<p>Could not load reviews: ${safe(error.message)}</p>`;
