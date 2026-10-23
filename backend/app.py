@@ -1,6 +1,6 @@
 
 import os
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, redirect
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -72,8 +72,7 @@ def error_response(message, status=500):
 
 @app.route("/", methods=["GET"])
 def home():
-    return send_from_directory(FRONTEND_DIR, "index.html")
-
+    return redirect(FRONTEND_ORIGIN)
 
 @app.route("/dashboard.html", methods=["GET"])
 def dashboard_page():
